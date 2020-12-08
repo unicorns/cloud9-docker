@@ -1,5 +1,7 @@
 FROM ubuntu:focal-20201106
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update && apt-get install -y git vim curl wget ripgrep make build-essential python locales-all
 
 WORKDIR /usr/src
