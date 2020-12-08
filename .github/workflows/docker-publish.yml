@@ -34,6 +34,8 @@ jobs:
           else
             # currently we don't have any tests
             # docker build . --file Dockerfile
+            # noop
+            :
           fi
 
   # Push image to GitHub Packages.
