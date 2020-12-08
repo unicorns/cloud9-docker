@@ -39,9 +39,13 @@ RUN wget --quiet "https://github.com/Kitware/CMake/releases/download/v$CMAKE_VER
     ./cmake-$CMAKE_VERSION-Linux-x86_64.sh --prefix=/usr/ --skip-license && \
     rm cmake-$CMAKE_VERSION-Linux-x86_64.sh
 
+# dumb-init
+RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb \
+    && dpkg -i dumb-init_*.deb && rm dumb-init_*.deb
+
 RUN mkdir -p /usr/src/ws
 WORKDIR /usr/src/ws
 
 EXPOSE 8181
 
-ENTRYPOINT ["/root/.c9/node/bin/node","/usr/src/c9sdk/server.js","--listen","0.0.0.0","-a","testuser:pass","-w","/usr/src/ws","--collab"]
+ENTRYPOINT ["dumb-init", "/root/.c9/node/bin/node","/usr/src/c9sdk/server.js","--listen","0.0.0.0","-w","/usr/src/ws","--collab"]
