@@ -20,8 +20,8 @@ RUN apt-get update && apt-get -y install openjdk-11-jdk maven gradle
 
 # C/C++
 # public LLVM PPA, development version of LLVM
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-    echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main" > /etc/apt/sources.list.d/llvm.list && \
+RUN wget --quiet -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+    echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal main" > /etc/apt/sources.list.d/llvm.list && \
     apt-get update && \
     apt-get install -y \
                        clang-tools \
@@ -29,18 +29,12 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
                        clang-tidy \
                        gcc-multilib \
                        g++-multilib \
-                       gdb && \
-    ln -s /usr/bin/clang /usr/bin/clang && \
-    ln -s /usr/bin/clang++ /usr/bin/clang++ && \
-    ln -s /usr/bin/clang-cl /usr/bin/clang-cl && \
-    ln -s /usr/bin/clang-cpp /usr/bin/clang-cpp && \
-    ln -s /usr/bin/clang-tidy /usr/bin/clang-tidy && \
-    ln -s /usr/bin/clangd /usr/bin/clangd
+                       gdb
 
 # Install latest stable CMake
 ARG CMAKE_VERSION=3.18.1
 
-RUN wget "https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.sh" && \
+RUN wget --quiet "https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.sh" && \
     chmod a+x cmake-$CMAKE_VERSION-Linux-x86_64.sh && \
     ./cmake-$CMAKE_VERSION-Linux-x86_64.sh --prefix=/usr/ --skip-license && \
     rm cmake-$CMAKE_VERSION-Linux-x86_64.sh
